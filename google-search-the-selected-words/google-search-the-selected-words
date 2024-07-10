@@ -1,0 +1,28 @@
+Sub OpenBrowser(strAddress As String)
+    Dim chromePath As String
+    
+    ' Replace with the actual path to the Chrome executable
+    chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+    
+    ' Open the URL in a new Chrome process
+    Shell """" & chromePath & """ """ & strAddress & """", vbNormalFocus
+End Sub
+Sub SearchOnGoogle()
+    Dim strText As String
+        If Selection.Type <> wdSelectionIP Then
+            strText = Selection.text
+            strText = Trim(strText)
+            Selection.Copy
+        Else
+            MsgBox ("Please select text first!")
+            Exit Sub
+        End If
+        ' Check if the selected text is a URL starting with "https://"
+    If LCase(Left(strText, 8)) = "https://" Or LCase(Left(strText, 7)) = "http://" Or LCase(Left(strText, 4)) = "www." Then
+        'Open the URL
+        OpenBrowser strText
+    Else
+        ' Search selected text on Google
+        OpenBrowser "https://www.google.com/search?num=20&hl=en&q=" & strText
+    End If
+End Sub
